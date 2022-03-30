@@ -1,25 +1,46 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import React, { useState } from "react";
+export default function App() {
+  const [data, setData] = useState([]);
+  const URL = "https://jsonplaceholder.typicode.com/users";
+  React.useEffect(() => {
+    fetchData();
+  }, []);
+  const fetchData = () => {
+    fetch(URL)
+      .then((res) => res.json())
+      .then((response) => {
+        console.log(response);
+        setData(response);
+      });
+  };
 
-function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1> Populating JSON Data in Tables</h1>
+
+      <tbody className="table">
+        <tr>
+          <th>Action</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Zipcode</th>
+          <th>Phone</th>
+          <th>CatchPhrase</th>
+        </tr>
+        {data.map((item, i) => (
+          <tr key={i}>
+            <td>-</td>
+            <td>{item.name}</td>
+            <td>{item.email}</td>
+            <td>{item.address.zipcode}</td>
+            <td>{item.phone}</td>
+            <td style={{ textOverflow: "ellipsis" }}>
+              {item.company.catchPhrase}
+            </td>
+          </tr>
+        ))}
+      </tbody>
     </div>
   );
 }
-
-export default App;
